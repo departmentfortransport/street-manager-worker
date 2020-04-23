@@ -1,41 +1,38 @@
 const TYPES = {
-  // Utils
-  K8sBatchV1Api: Symbol.for('K8sBatchV1Api'),
-
-  // Mappers
-  Job1ConfigMapper: Symbol.for('Job1ConfigMapper'),
-
-  // Processors
-  MessageProcessorDelegator: Symbol.for('MessageProcessorDelegator'),
-  Job1MessageProcessor: Symbol.for('Job1MessageProcessor'),
-
-  // Services
-  AWSService: Symbol.for('AWSService'),
-  BashService: Symbol.for('BashService'),
-  JobFileService: Symbol.for('JobFileService'),
-  JobStatusService: Symbol.for('JobStatusService'),
-  JobTemplateGenerator: Symbol.for('JobTemplateGenerator'),
-  FileService: Symbol.for('FileService'),
-  JobService: Symbol.for('JobService'),
-  JobCleanupService: Symbol.for('JobCleanupService'),
-  MessageService: Symbol.for('MessageService'),
-  SQSService: Symbol.for('SQSService'),
-  YamlService: Symbol.for('YamlService'),
-
-  SQS: Symbol.for('SQS'),
-  Logger: Symbol.for('Logger'),
+  // Worker
   Worker: Symbol.for('Worker'),
 
-  // CSV job
-  JOB_CONFIG: Symbol.for('JOB_CONFIG'),
-  JOB_1_CONFIG: Symbol.for('JOB_1_CONFIG'),
+  // App Config
   NAMESPACE: Symbol.for('NAMESPACE'),
-  IAM_ROLE: Symbol.for('IAM_ROLE'),
+  JOBS_TAG: Symbol.for('JOBS_TAG'),
+
+  // AWS
   ECR_URL: Symbol.for('ECR_URL'),
-  SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
+  IAM_ROLE: Symbol.for('IAM_ROLE'),
   SQS_POLLING_INTERVAL: Symbol.for('SQS_POLLING_INTERVAL'),
+  SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
+  SQS: Symbol.for('SQS'),
+
+  // Common services
+  FileService: Symbol.for('FileService'),
+  JobCleanupService: Symbol.for('JobCleanupService'),
+  JobFileService: Symbol.for('JobFileService'),
+  JobService: Symbol.for('JobService'),
+  JobStatusService: Symbol.for('JobStatusService'),
+  JobTemplateGenerator: Symbol.for('JobTemplateGenerator'),
+  MessageService: Symbol.for('MessageService'),
+  MessageProcessorDelegator: Symbol.for('MessageProcessorDelegator'),
+  SQSService: Symbol.for('SQSService'),
+
+  // Utils
+  K8sBatchV1Api: Symbol.for('K8sBatchV1Api'),
+  Logger: Symbol.for('Logger'),
+
+  // Job 1
   JOB_1_MAX_JOBS: Symbol.for('JOB_1_MAX_JOBS'),
-  JOBS_TAG: Symbol.for('JOBS_TAG')
+  JOB_1_CONFIG: Symbol.for('JOB_1_CONFIG'),
+  Job1MessageProcessor: Symbol.for('Job1MessageProcessor'),
+  Job1ConfigMapper: Symbol.for('Job1ConfigMapper')
 }
 
 export default TYPES
