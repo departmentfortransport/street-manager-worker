@@ -1,8 +1,10 @@
 # street-manager-worker
 
-Application used to listen to Amazon Simple Queue Service (SQS) for messages that are emitted when a CSV export is requested.
+Application used to listen to Amazon Simple Queue Service (SQS) for messages that are emitted.
 
-A CSV export job is executed for the relevant CSV request using the retrieved csvId within the SQS message.
+When a message is received, one of the following jobs will be started:
+* Job 1
+* Job 2
 
 ## Useful commands
 ```
