@@ -1,10 +1,26 @@
 export interface Job1Config {
-  JOB_1_INT_FIELD: number
+  JOB_1_INT_FIELD: string
   JOB_1_STR_FIELD: string
+  PGHOST: string
+  PGPORT: string
+  PGDATABASE: string
+  PGUSER: string
+  PGPASSWORD: string
+  PGMINPOOLSIZE: string
+  PGMAXPOOLSIZE: string
+  PGSSL: string
 }
 
 export enum Job1ConfigMapKey {
   JOB_1_ID = 'JOB_1_ID',
   JOB_1_INT_FIELD = 'JOB_1_INT_FIELD',
-  JOB_1_STR_FIELD = 'JOB_1_STR_FIELD'
+  JOB_1_STR_FIELD = 'JOB_1_STR_FIELD',
+  PGHOST = 'PGHOST',
+  PGPORT = 'PGPORT',
+  PGDATABASE = 'PGDATABASE',
+  PGUSER = 'PGUSER',
+  PGPASSWORD = 'PGPASSWORD',
+  PGMINPOOLSIZE = 'PGMINPOOLSIZE',
+  PGMAXPOOLSIZE = 'PGMAXPOOLSIZE',
+  PGSSL = 'PGSSL'
 }

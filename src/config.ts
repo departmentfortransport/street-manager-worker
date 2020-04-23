@@ -12,5 +12,13 @@ export const SQS_TIMEOUT = process.env.SQS_TIMEOUT || (5 * 1000)
 
 // Job 1
 export const JOB_1_MAX_JOBS = process.env.JOB_1_MAX_JOBS || 10
-export const JOB_1_INT_FIELD = process.env.JOB_1_INT_FIELD || 123
-export const JOB_1_STR_FIELD = process.env.JOB_1_STR_FIELD || 'string'
+export const JOB_1_INT_FIELD = process.env.JOB_1_INT_FIELD
+export const JOB_1_STR_FIELD = process.env.JOB_1_STR_FIELD
+export const JOB_1_PGHOST = process.env.JOB_1_PGHOST
+export const JOB_1_PGPORT = process.env.JOB_1_PGPORT
+export const JOB_1_PGDATABASE = process.env.JOB_1_PGDATABASE
+export const JOB_1_PGUSER = process.env.JOB_1_PGUSER
+export const JOB_1_PGPASSWORD = process.env.JOB_1_PGPASSWORD
+export const JOB_1_PGMINPOOLSIZE = process.env.JOB_1_PGMINPOOLSIZE
+export const JOB_1_PGMAXPOOLSIZE = process.env.JOB_1_PGMAXPOOLSIZE
+export const JOB_1_PGSSL = process.env.JOB_1_PGSSL

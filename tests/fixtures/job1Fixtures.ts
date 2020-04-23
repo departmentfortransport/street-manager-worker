@@ -4,8 +4,16 @@ import { generateBaseMessage } from './messageFixtures'
 
 export function generateJob1Config(): Job1Config {
   return {
-    JOB_1_INT_FIELD: 123,
-    JOB_1_STR_FIELD: 'some string'
+    JOB_1_INT_FIELD: '123',
+    JOB_1_STR_FIELD: 'some string',
+    PGHOST: 'pg-host',
+    PGPORT: '5432',
+    PGDATABASE: 'pg-db',
+    PGUSER: 'pg-user',
+    PGPASSWORD: 'pg-pw',
+    PGMINPOOLSIZE: '2',
+    PGMAXPOOLSIZE: '5',
+    PGSSL: 'true'
   }
 }
 
