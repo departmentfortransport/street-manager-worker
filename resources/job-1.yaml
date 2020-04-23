@@ -1,0 +1,49 @@
+---
+  apiVersion: batch/v1
+  kind: Job
+  metadata:
+    name: change_me
+    labels:
+      app: jobs
+  spec:
+    template:
+      metadata:
+        labels:
+          app: jobs
+          allow-psql: "true"
+          allow-kiam: "true"
+          allow-http: "true"
+        annotations:
+          iam.amazonaws.com/role: change_me
+      spec:
+        securityContext:
+          runAsUser: 1000
+          fsGroup: 1000
+        containers:
+        - name: jobs
+          image: change_me
+          env:
+            - name: JOB_1_ID
+              value: change_me
+            - name: JOB_1_INT_FIELD
+              value: change_me
+            - name: JOB_1_STR_FIELD
+              value: change_me
+          args:
+            - /bin/sh
+            - -c
+            - npm run job-1
+          resources:
+            limits:
+              cpu: 50m
+              memory: 256Mi
+            requests:
+              cpu: 50m
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /opt/app/dft-street-manager-jobs/tmp
+              name: tmp
+        volumes:
+        - name: tmp
+          emptyDir: {}
+        restartPolicy: Never

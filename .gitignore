@@ -1,0 +1,9 @@
+.DS_Store
+.ssh
+
+coverage
+
+dist
+
+# Dependency directories
+node_modules
