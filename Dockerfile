@@ -14,12 +14,6 @@ COPY package.json .
 
 COPY package-lock.json .
 
-<<<<<<< HEAD
-=======
-# TODO
-COPY csv-export-job.yaml ${YAML_OUTPUT_DIRECTORY}
-
->>>>>>> 049e322... Updated README and removed csv worker ref from cci config
 FROM base AS dependencies
 
 RUN apk add --no-cache \
