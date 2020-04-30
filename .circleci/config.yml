@@ -1,0 +1,123 @@
+aliases:
+  - &assume_admin_role_dev_account
+    name: Assume Admin role on dev account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_MASTER_ACCOUNT_ACCESS_KEY_ID}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_MASTER_ACCOUNT_SECRET_ACCESS_KEY}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::454455319752:role/Dev-Admin \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+  - &ecr_login
+    name: ECR login
+    command: $(aws ecr get-login --no-include-email --region eu-west-2)
+  - &prepare_ssh_key
+    name: Prepare SSH key
+    command: |
+      mkdir -p .ssh
+      echo ${SSH_PRIV_KEY} | base64 --decode > .ssh/id_rsa
+      chmod 0600 .ssh/id_rsa
+  - &test
+    name: Test
+    command: |
+      pip install awscli --upgrade --user
+      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} . --target dependencies --no-cache --pullversion: 2.1
+  - &build_and_release
+    name: Build and release
+    command: |
+      source $BASH_ENV
+      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} .
+      docker tag ${ECR_URL}/worker:${CIRCLE_SHA1}
+      aws configure set default.region eu-west-2
+      aws ecr batch-delete-image --repository-name worker --image-ids imageTag=${CIRCLE_SHA1}
+      docker push ${ECR_URL}/worker:${CIRCLE_SHA1}
+  - &cleanup
+    name: Cleanup
+    command: |
+      rm -rf .ssh
+  - &clone_street_manager_int
+    name: Clone street-manager-int repo
+    command: |
+      docker run \
+        -e CIRCLE_SHA1=$CIRCLE_SHA1 \
+        -e CLUSTER_NAME=$CLUSTER_NAME \
+        -e NAMESPACE=$NAMESPACE \
+        -e SSH_PRIV_KEY=$SSH_PRIV_KEY \
+        -it alpine:latest \
+        sh -l -c "
+          mkdir -p ~/.ssh
+          echo ${SSH_PRIV_KEY} | base64 -d > ~/.ssh/id_rsa
+          chmod 0600 ~/.ssh/id_rsa
+          export GIT_SSH_COMMAND='ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa -F /dev/null'
+          apk add git openssh-client jq curl
+          curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
+          chmod +x /usr/local/bin/yq
+          git config --global user.name "streetmanagerops"
+          git config --global user.email streetmanagerops@kainos.com
+          git clone git@github.com:departmentfortransport/street-manager-$NAMESPACE.git
+          cd street-manager-$NAMESPACE
+          /usr/local/bin/yq w -i config.yaml apps.worker.tag $CIRCLE_SHA1
+          git diff
+          git commit -am \"Bumping worker version.\"
+          git push -u origin
+        "
+  - &tag_existing_container
+    name: Add tag to existing container
+    command: |
+      source $BASH_ENV
+      docker pull ${ECR_URL}/worker:${CIRCLE_SHA1}
+      TAG_NAME=$(git describe --exact-match --tags ${CIRCLE_SHA1}) && (
+        docker tag ${ECR_URL}/worker:${CIRCLE_SHA1} ${ECR_URL}/worker:${TAG_NAME}
+        docker push ${ECR_URL}/worker:${TAG_NAME}
+      )
+jobs:
+  build:
+    machine:
+      image: circleci/classic:edge
+    steps:
+      - checkout
+      - run: *assume_admin_role_dev_account
+      - run: *ecr_login
+      - run: *test
+      - run: *assume_admin_role_dev_account
+      - run: *build_and_release
+      - run: *cleanup
+  deployment:
+    machine: true
+    environment:
+      CLUSTER_NAME: dev-b.stwrks-dev.net
+      NAMESPACE: int
+    steps:
+      - run: *prepare_ssh_key
+      - run: *clone_street_manager_int
+  tagged_build:
+    machine: true
+    steps:
+      - checkout
+      - run: *assume_admin_role_dev_account
+      - run: *ecr_login
+      - run: *tag_existing_container
+
+workflows:
+  tagged_build:
+    jobs:
+      - tagged_build:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
+  coverage:
+    jobs:
+      - build
+      - deployment:
+          requires:
+            - build
+          filters:
+            branches:
+              only:
+                - /^master$/
