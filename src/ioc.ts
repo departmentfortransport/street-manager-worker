@@ -62,16 +62,16 @@ iocContainer.bind<Logger>(TYPES.Logger).to(Logger)
 // Job 1
 iocContainer.bind<number>(TYPES.JOB_1_MAX_JOBS).toConstantValue(Number(JOB_1_MAX_JOBS))
 iocContainer.bind<Job1Config>(TYPES.JOB_1_CONFIG).toConstantValue({
-  JOB_1_INT_FIELD: JOB_1_INT_FIELD,
+  JOB_1_INT_FIELD: Number(JOB_1_INT_FIELD),
   JOB_1_STR_FIELD: JOB_1_STR_FIELD,
   PGHOST: JOB_1_PGHOST,
   PGPORT: JOB_1_PGPORT,
   PGDATABASE: JOB_1_PGDATABASE,
   PGUSER: JOB_1_PGUSER,
   PGPASSWORD: JOB_1_PGPASSWORD,
-  PGMINPOOLSIZE: JOB_1_PGMINPOOLSIZE,
-  PGMAXPOOLSIZE: JOB_1_PGMAXPOOLSIZE,
-  PGSSL: JOB_1_PGSSL
+  PGMINPOOLSIZE: Number(JOB_1_PGMINPOOLSIZE),
+  PGMAXPOOLSIZE: Number(JOB_1_PGMAXPOOLSIZE),
+  PGSSL: Boolean(JOB_1_PGSSL)
 })
 iocContainer.bind<Job1MessageProcessor>(TYPES.Job1MessageProcessor).to(Job1MessageProcessor)
 iocContainer.bind<Job1ConfigMapper>(TYPES.Job1ConfigMapper).to(Job1ConfigMapper)

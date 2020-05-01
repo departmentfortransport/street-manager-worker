@@ -23,7 +23,7 @@ export default class Job1ConfigMapper extends JobConfigMapper {
       super.mapToEnvVar(Job1ConfigMapKey.PGPASSWORD, this.CONFIG.PGPASSWORD),
       super.mapToEnvVar(Job1ConfigMapKey.PGMINPOOLSIZE, this.CONFIG.PGMINPOOLSIZE),
       super.mapToEnvVar(Job1ConfigMapKey.PGMAXPOOLSIZE, this.CONFIG.PGMAXPOOLSIZE),
-      super.mapToEnvVar(Job1ConfigMapKey.PGSSL, this.CONFIG.PGSSL)
+      super.mapToEnvVar(Job1ConfigMapKey.PGSSL, `${this.CONFIG.PGSSL}`)
     ]
   }
 }

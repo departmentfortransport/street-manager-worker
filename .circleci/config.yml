@@ -25,13 +25,12 @@ aliases:
     name: Test
     command: |
       pip install awscli --upgrade --user
-      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} . --target dependencies --no-cache --pullversion: 2.1
+      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} . --target dependencies --no-cache --pull
   - &build_and_release
     name: Build and release
     command: |
       source $BASH_ENV
       docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} .
-      docker tag ${ECR_URL}/worker:${CIRCLE_SHA1}
       aws configure set default.region eu-west-2
       aws ecr batch-delete-image --repository-name worker --image-ids imageTag=${CIRCLE_SHA1}
       docker push ${ECR_URL}/worker:${CIRCLE_SHA1}
@@ -74,6 +73,8 @@ aliases:
         docker tag ${ECR_URL}/worker:${CIRCLE_SHA1} ${ECR_URL}/worker:${TAG_NAME}
         docker push ${ECR_URL}/worker:${TAG_NAME}
       )
+
+version: 2.1
 jobs:
   build:
     machine:

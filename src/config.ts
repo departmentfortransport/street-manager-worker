@@ -11,15 +11,14 @@ export const SQS_QUEUE_URL = process.env.SQS_QUEUE_URL
 export const SQS_TIMEOUT = process.env.SQS_TIMEOUT || (5 * 1000)
 
 // Job 1
-export const JOB_1_MAX_JOBS = process.env.JOB_1_MAX_JOBS || 10
+export const JOB_1_MAX_JOBS = process.env.JOB_1_MAX_JOBS || '10'
 export const JOB_1_INT_FIELD = process.env.JOB_1_INT_FIELD
 export const JOB_1_STR_FIELD = process.env.JOB_1_STR_FIELD
 export const JOB_1_PGHOST = process.env.JOB_1_PGHOST || 'localhost'
-export const JOB_1_PGPORT = process.env.JOB_1_PGPORT || 5432
+export const JOB_1_PGPORT = process.env.JOB_1_PGPORT || '5432'
 export const JOB_1_PGDATABASE = process.env.JOB_1_PGDATABASE || 'work'
 export const JOB_1_PGUSER = process.env.JOB_1_PGUSER || 'app'
 export const JOB_1_PGPASSWORD = process.env.JOB_1_PGPASSWORD || 'app'
-export const JOB_1_PGMINPOOLSIZE = process.env.JOB_1_PGMINPOOLSIZE || 5
-export const JOB_1_PGMAXPOOLSIZE = process.env.JOB_1_PGMAXPOOLSIZE || 10
-export const JOB_1_PGSSL = process.env.PGSSL === 'true' || false
-q
+export const JOB_1_PGMINPOOLSIZE = process.env.JOB_1_PGMINPOOLSIZE || '5'
+export const JOB_1_PGMAXPOOLSIZE = process.env.JOB_1_PGMAXPOOLSIZE || '10'
+export const JOB_1_PGSSL = process.env.PGSSL === 'true' || 'false'

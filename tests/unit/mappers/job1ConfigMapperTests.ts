@@ -12,16 +12,16 @@ describe('Job1ConfigMapper', () => {
 
   const CONFIG: Job1Config = {
     ...generateJob1Config(),
-    JOB_1_INT_FIELD: '123',
+    JOB_1_INT_FIELD: 123,
     JOB_1_STR_FIELD: 'some string',
     PGHOST: 'pg-host',
     PGPORT: '5432',
     PGDATABASE: 'pg-db',
     PGUSER: 'pg-user',
     PGPASSWORD: 'pg-pw',
-    PGMINPOOLSIZE: '2',
-    PGMAXPOOLSIZE: '5',
-    PGSSL: 'true'
+    PGMINPOOLSIZE: 2,
+    PGMAXPOOLSIZE: 5,
+    PGSSL: true
   }
 
   before(() => mapper = new Job1ConfigMapper(CONFIG))
