@@ -55,7 +55,14 @@ iocContainer.bind<MessageProcessorDelegator>(TYPES.MessageProcessorDelegator).to
 iocContainer.bind<SQSService>(TYPES.SQSService).to(SQSService)
 
 // Utils
-iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(new KubeConfig().makeApiClient(BatchV1Api))
+console.error('wha wha wha wha did ya say')
+const config: KubeConfig = new KubeConfig()
+console.error(config, 'wha wha wha wha did ya say - pt 2')
+config.loadFromCluster()
+console.error(config, 'wha wha wha wha did ya say - p3')
+const apiClient: BatchV1Api = config.makeApiClient(BatchV1Api)
+iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(apiClient)
+
 iocContainer.bind<Logger>(TYPES.Logger).to(Logger)
 
 // Job 1
