@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Container } from 'inversify'
 import TYPES from './types'
-import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, IAM_ROLE, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT, JOB_1_MAX_JOBS, JOB_1_INT_FIELD, JOB_1_STR_FIELD, JOB_1_PGHOST, JOB_1_PGPORT, JOB_1_PGDATABASE, JOB_1_PGUSER, JOB_1_PGPASSWORD, JOB_1_PGMINPOOLSIZE, JOB_1_PGMAXPOOLSIZE, JOB_1_PGSSL } from './config'
+import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT, JOB_1_IAM_ROLE, JOB_1_MAX_JOBS, JOB_1_INT_FIELD, JOB_1_STR_FIELD, JOB_1_PGHOST, JOB_1_PGPORT, JOB_1_PGDATABASE, JOB_1_PGUSER, JOB_1_PGPASSWORD, JOB_1_PGMINPOOLSIZE, JOB_1_PGMAXPOOLSIZE, JOB_1_PGSSL } from './config'
 import { SQS } from 'aws-sdk'
 import { KubeConfig, BatchV1Api } from '@kubernetes/client-node'
 import Worker from './worker'
@@ -30,7 +30,6 @@ iocContainer.bind<string>(TYPES.JOBS_TAG).toConstantValue(JOBS_TAG)
 
 // AWS
 iocContainer.bind<string>(TYPES.ECR_URL).toConstantValue(ECR_URL)
-iocContainer.bind<string>(TYPES.IAM_ROLE).toConstantValue(IAM_ROLE)
 iocContainer.bind<number>(TYPES.SQS_POLLING_INTERVAL).toConstantValue(Number(SQS_POLLING_INTERVAL))
 iocContainer.bind<string>(TYPES.SQS_QUEUE_URL).toConstantValue(SQS_QUEUE_URL)
 
@@ -60,6 +59,7 @@ iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(new KubeConfi
 iocContainer.bind<Logger>(TYPES.Logger).to(Logger)
 
 // Job 1
+iocContainer.bind<string>(TYPES.JOB_1_IAM_ROLE).toConstantValue(JOB_1_IAM_ROLE)
 iocContainer.bind<number>(TYPES.JOB_1_MAX_JOBS).toConstantValue(Number(JOB_1_MAX_JOBS))
 iocContainer.bind<Job1Config>(TYPES.JOB_1_CONFIG).toConstantValue({
   JOB_1_INT_FIELD: Number(JOB_1_INT_FIELD),

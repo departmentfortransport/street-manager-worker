@@ -3,8 +3,8 @@ import { inject } from 'inversify'
 import TYPES from '../../types'
 import FileService from '../files/fileService'
 import { injectable } from 'inversify'
-import { JobType } from 'aws-sdk/clients/importexport'
 import { V1Job } from '@kubernetes/client-node'
+import { JobType } from '../../models/job'
 import * as path from 'path'
 
 @injectable()

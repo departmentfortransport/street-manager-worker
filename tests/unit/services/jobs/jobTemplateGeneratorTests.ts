@@ -22,7 +22,6 @@ describe('JobTemplateGenerator', () => {
 
     generator = new JobTemplateGenerator(
       instance(fileService),
-      IAM_ROLE,
       ECR_URL,
       JOBS_TAG
     )
@@ -46,9 +45,15 @@ describe('JobTemplateGenerator', () => {
     })
 
     it('should pass the IAM role to the template', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env, IAM_ROLE)
 
       assert.equal(result.spec.template.metadata.annotations['iam.amazonaws.com/role'], IAM_ROLE)
+    })
+
+    it('should not pass the IAM role to the template if not provided', () => {
+      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+
+      assert.equal(result.spec.template.metadata.annotations['iam.amazonaws.com/role'], 'change_me')
     })
 
     it('should generate the job image using the ECR URL and Jobs tag version', () => {

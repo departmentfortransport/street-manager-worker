@@ -8,7 +8,6 @@ const TYPES = {
 
   // AWS
   ECR_URL: Symbol.for('ECR_URL'),
-  IAM_ROLE: Symbol.for('IAM_ROLE'),
   SQS_POLLING_INTERVAL: Symbol.for('SQS_POLLING_INTERVAL'),
   SQS_QUEUE_URL: Symbol.for('SQS_QUEUE_URL'),
   SQS: Symbol.for('SQS'),
@@ -29,6 +28,7 @@ const TYPES = {
   Logger: Symbol.for('Logger'),
 
   // Job 1
+  JOB_1_IAM_ROLE: Symbol.for('JOB_1_IAM_ROLE'),
   JOB_1_MAX_JOBS: Symbol.for('JOB_1_MAX_JOBS'),
   JOB_1_CONFIG: Symbol.for('JOB_1_CONFIG'),
   Job1MessageProcessor: Symbol.for('Job1MessageProcessor'),

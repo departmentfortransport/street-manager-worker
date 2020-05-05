@@ -17,14 +17,14 @@ export default class JobService {
     @inject(TYPES.Logger) private logger: Logger,
     @inject(TYPES.JobTemplateGenerator) private templateGenerator: JobTemplateGenerator) {}
 
-  public async processJob(id: number, type: JobType, maxJobs: number, getEnvFn: () => V1EnvVar[]): Promise<boolean> {
+  public async processJob(id: number, type: JobType, maxJobs: number, getEnvFn: () => V1EnvVar[], iamRole?: string): Promise<boolean> {
     try {
       if (await this.isMaxJobsInProgress(type, maxJobs)) {
         this.logger.log(`Job with type [${type}] not started as maximum concurrent jobs reached`)
         return false
       }
 
-      const job: V1Job = this.templateGenerator.generateJobTemplate(id, type, getEnvFn())
+      const job: V1Job = this.templateGenerator.generateJobTemplate(id, type, getEnvFn(), iamRole)
 
       await this.k8s.createNamespacedJob(this.NAMESPACE, job)
     } catch (err) {

@@ -20,6 +20,7 @@ describe('JobService', () => {
   let templateGenerator: JobTemplateGenerator
 
   const NAMESPACE = 'local'
+  const IAM_ROLE = 'role'
 
   beforeEach(() => {
     jobStatusService = mock(JobStatusService)
@@ -65,14 +66,14 @@ describe('JobService', () => {
       const job: V1Job = generateV1Job()
 
       when(jobStatusService.getInProgressJobs(JobType.Job1)).thenResolve([])
-      when(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars)).thenReturn(job)
+      when(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars, IAM_ROLE)).thenReturn(job)
 
-      const result: boolean = await service.processJob(id, JobType.Job1, maxJobs, getEnvStub)
+      const result: boolean = await service.processJob(id, JobType.Job1, maxJobs, getEnvStub, IAM_ROLE)
 
       assert.isTrue(result)
 
       assert.isTrue(getEnvStub.called)
-      verify(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars)).called()
+      verify(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars, IAM_ROLE)).called()
       verify(k8s.createNamespacedJob(NAMESPACE, job)).called()
 
       verify(logger.log(anything())).never()
@@ -84,10 +85,10 @@ describe('JobService', () => {
       const createJobError: Error = new Error()
 
       when(jobStatusService.getInProgressJobs(JobType.Job1)).thenResolve([])
-      when(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars)).thenReturn(job)
+      when(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars, IAM_ROLE)).thenReturn(job)
       when(k8s.createNamespacedJob(NAMESPACE, job)).thenReject(createJobError)
 
-      const result: boolean = await service.processJob(id, JobType.Job1, maxJobs, getEnvStub)
+      const result: boolean = await service.processJob(id, JobType.Job1, maxJobs, getEnvStub, IAM_ROLE)
 
       assert.isFalse(result)
 

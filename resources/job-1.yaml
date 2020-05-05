@@ -13,8 +13,6 @@
           allow-psql: "true"
           allow-kiam: "true"
           allow-http: "true"
-        annotations:
-          iam.amazonaws.com/role: change_me
       spec:
         securityContext:
           runAsUser: 1000
