@@ -73,6 +73,18 @@ aliases:
         docker tag ${ECR_URL}/worker:${CIRCLE_SHA1} ${ECR_URL}/worker:${TAG_NAME}
         docker push ${ECR_URL}/worker:${TAG_NAME}
       )
+  - &push_preprod_ecr
+    name: Push to preprod ECR
+    command: |
+      source $BASH_ENV
+      docker tag ${AWS_ACCOUNT_DEV}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG} ${AWS_ACCOUNT_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG}
+      docker push ${AWS_ACCOUNT_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/csv-worker:${CIRCLE_TAG}
+  - &push_prod_ecr
+    name: Push to prod ECR
+    command: |
+      source $BASH_ENV
+      docker tag ${AWS_ACCOUNT_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG} ${AWS_ACCOUNT_PROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG}
+      docker push ${AWS_ACCOUNT_PROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG}
 
 version: 2.1
 jobs:
