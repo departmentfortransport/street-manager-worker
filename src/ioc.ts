@@ -3,7 +3,7 @@ import { Container } from 'inversify'
 import TYPES from './types'
 import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT, JOB_1_IAM_ROLE, JOB_1_MAX_JOBS, JOB_1_INT_FIELD, JOB_1_STR_FIELD, JOB_1_PGHOST, JOB_1_PGPORT, JOB_1_PGDATABASE, JOB_1_PGUSER, JOB_1_PGPASSWORD, JOB_1_PGMINPOOLSIZE, JOB_1_PGMAXPOOLSIZE, JOB_1_PGSSL } from './config'
 import { SQS } from 'aws-sdk'
-import { KubeConfig, BatchV1Api } from '@kubernetes/client-node'
+import { BatchV1Api, KubeConfig } from '@kubernetes/client-node'
 import Worker from './worker'
 import FileService from './services/files/fileService'
 import JobCleanupService from './services/jobs/jobCleanupService'
@@ -55,11 +55,15 @@ iocContainer.bind<MessageProcessorDelegator>(TYPES.MessageProcessorDelegator).to
 iocContainer.bind<SQSService>(TYPES.SQSService).to(SQSService)
 
 // Utils
-console.error('wha wha wha wha did ya say')
+
 const config: KubeConfig = new KubeConfig()
-console.error(config, 'wha wha wha wha did ya say - pt 2')
-config.loadFromCluster()
-console.error(config, 'wha wha wha wha did ya say - p3')
+if (NAMESPACE === 'local') {
+  console.log('can ye not')
+  config.loadFromDefault()
+} else {
+  config.loadFromCluster()
+}
+
 const apiClient: BatchV1Api = config.makeApiClient(BatchV1Api)
 iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(apiClient)
 

@@ -4,7 +4,8 @@ ENV KUBECTL_VERSION="v1.12.1"
 
 RUN apk upgrade --no-cache && \
     mkdir -p /opt/app/dft-street-manager-worker && \
-    mkdir -m 777 -p /opt/app/dft-street-manager-worker/tmp
+    mkdir -m 777 -p /opt/app/dft-street-manager-worker/tmp \
+    mkdir -m 777 -p /opt/app/dft-street-manager-worker/.kube
 
 WORKDIR /opt/app/dft-street-manager-worker
 
