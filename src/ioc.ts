@@ -57,15 +57,8 @@ iocContainer.bind<SQSService>(TYPES.SQSService).to(SQSService)
 // Utils
 
 const config: KubeConfig = new KubeConfig()
-if (NAMESPACE === 'local') {
-  console.log('can ye not')
-  config.loadFromDefault()
-} else {
-  config.loadFromCluster()
-}
-
-const apiClient: BatchV1Api = config.makeApiClient(BatchV1Api)
-iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(apiClient)
+config.loadFromCluster()
+iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(config.makeApiClient(BatchV1Api))
 
 iocContainer.bind<Logger>(TYPES.Logger).to(Logger)
 
