@@ -13,7 +13,9 @@ export default class JobCleanupService {
     @inject(TYPES.NAMESPACE) private NAMESPACE: string) {}
 
   public async cleanupJobs(): Promise<void> {
+    console.log('about to clean up jobs')
     const jobsToCleanup: string[] = await this.getJobsToCleanup()
+    console.log('jobs?', jobsToCleanup)
 
     if (jobsToCleanup.length > 0) {
       await Promise.all(jobsToCleanup.map((job: string) => this.cleanupJob(job)))
@@ -21,10 +23,12 @@ export default class JobCleanupService {
   }
 
   private async getJobsToCleanup(): Promise<string[]> {
+    console.log('jobs before mapping', await this.jobStatusService.getFinishedJobs())
     return (await this.jobStatusService.getFinishedJobs()).map(this.getJobName)
   }
 
   private getJobName(job: V1Job): string {
+    console.log('this is the name', job.metadata.name)
     return job.metadata.name
   }
 

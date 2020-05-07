@@ -12,6 +12,8 @@ export default class JobStatusService {
     @inject(TYPES.NAMESPACE) private NAMESPACE: string) {}
 
   public async getFinishedJobs(): Promise<V1Job[]> {
+    console.log('jobs before filtering finished', await this.getJobs())
+    console.log('jobs after filtering finished', (await this.getJobs()).filter(this.isJobFinished))
     return (await this.getJobs()).filter(this.isJobFinished)
   }
 
