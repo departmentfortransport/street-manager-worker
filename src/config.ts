@@ -21,4 +21,4 @@ export const JOB_1_PGUSER = process.env.JOB_1_PGUSER || 'app'
 export const JOB_1_PGPASSWORD = process.env.JOB_1_PGPASSWORD || 'app'
 export const JOB_1_PGMINPOOLSIZE = process.env.JOB_1_PGMINPOOLSIZE || '5'
 export const JOB_1_PGMAXPOOLSIZE = process.env.JOB_1_PGMAXPOOLSIZE || '10'
-export const JOB_1_PGSSL = process.env.PGSSL === 'true' || 'false'
+export const JOB_1_PGSSL = process.env.PGSSL === 'true' || false
