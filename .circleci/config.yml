@@ -6,7 +6,33 @@ aliases:
       export AWS_ACCESS_KEY_ID="${AWS_MASTER_ACCOUNT_ACCESS_KEY_ID}"
       export AWS_SECRET_ACCESS_KEY="${AWS_MASTER_ACCOUNT_SECRET_ACCESS_KEY}"
       TOKEN=$(aws sts assume-role \
-        --role-arn arn:aws:iam::454455319752:role/Dev-Admin \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_DEV}:role/${AWS_ROLE_DEV} \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+  - &assume_preprod_admin_role
+    name: Assume role on Preprod account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_PREPROD}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_PREPROD}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_PREPROD}:role/${AWS_ROLE_PREPROD} \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+  - &assume_prod_admin_role
+    name: Assume role on Prod account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_PROD}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_PROD}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_PROD}:role/${AWS_ROLE_PROD} \
         --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
         )
       echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
@@ -114,7 +140,12 @@ jobs:
       - run: *assume_admin_role_dev_account
       - run: *ecr_login
       - run: *tag_existing_container
-
+      - run: *assume_preprod_admin_role
+      - run: *ecr_login
+      - run: *push_preprod_ecr
+      - run: *assume_prod_admin_role
+      - run: *ecr_login
+      - run: *push_prod_ecr
 workflows:
   tagged_build:
     jobs:

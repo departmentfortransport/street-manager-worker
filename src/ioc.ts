@@ -55,7 +55,6 @@ iocContainer.bind<MessageProcessorDelegator>(TYPES.MessageProcessorDelegator).to
 iocContainer.bind<SQSService>(TYPES.SQSService).to(SQSService)
 
 // Utils
-
 const config: KubeConfig = new KubeConfig()
 config.loadFromCluster()
 iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(config.makeApiClient(BatchV1Api))
