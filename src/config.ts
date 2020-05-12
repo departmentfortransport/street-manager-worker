@@ -1,5 +1,5 @@
 // App
-export const JOBS_TAG = '1e3a1139422cbe78b135de95cdc677798a3c3368'
+export const JOBS_TAG = '8aaed04c6f212fea28b95e035be745308ac96ae7'
 export const NAMESPACE = process.env.NAMESPACE || 'local'
 
 // AWS
@@ -7,7 +7,8 @@ export const AWS_REGION = process.env.AWS_REGION
 export const ECR_URL = process.env.ECR_URL
 export const SQS_POLLING_INTERVAL = process.env.SQS_POLLING_INTERVAL || 10
 export const SQS_QUEUE_URL = process.env.SQS_QUEUE_URL
-export const SQS_TIMEOUT = process.env.SQS_TIMEOUT || (5 * 1000)
+export const SQS_CONNECT_TIMEOUT_MS = process.env.SQS_CONNECT_TIMEOUT_MS || (5 * 1000)
+export const SQS_TIMEOUT_MS = process.env.SQS_TIMEOUT_MS || (120 * 1000)
 
 // Job 1
 export const JOB_1_IAM_ROLE = process.env.JOB_1_IAM_ROLE

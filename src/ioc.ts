@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Container } from 'inversify'
 import TYPES from './types'
-import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT, JOB_1_IAM_ROLE, JOB_1_MAX_JOBS, JOB_1_INT_FIELD, JOB_1_STR_FIELD, JOB_1_PGHOST, JOB_1_PGPORT, JOB_1_PGDATABASE, JOB_1_PGUSER, JOB_1_PGPASSWORD, JOB_1_PGMINPOOLSIZE, JOB_1_PGMAXPOOLSIZE, JOB_1_PGSSL } from './config'
+import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT_MS, SQS_CONNECT_TIMEOUT_MS, JOB_1_IAM_ROLE, JOB_1_MAX_JOBS, JOB_1_INT_FIELD, JOB_1_STR_FIELD, JOB_1_PGHOST, JOB_1_PGPORT, JOB_1_PGDATABASE, JOB_1_PGUSER, JOB_1_PGPASSWORD, JOB_1_PGMINPOOLSIZE, JOB_1_PGMAXPOOLSIZE, JOB_1_PGSSL } from './config'
 import { SQS } from 'aws-sdk'
 import { BatchV1Api, KubeConfig } from '@kubernetes/client-node'
 import Worker from './worker'
@@ -37,8 +37,8 @@ iocContainer.bind<SQS>(TYPES.SQS).toConstantValue(
   new SQS({
     region: AWS_REGION,
     httpOptions: {
-      connectTimeout: Number(SQS_TIMEOUT),
-      timeout: Number(SQS_TIMEOUT)
+      connectTimeout: Number(SQS_CONNECT_TIMEOUT_MS),
+      timeout: Number(SQS_TIMEOUT_MS)
     }
   })
 )
