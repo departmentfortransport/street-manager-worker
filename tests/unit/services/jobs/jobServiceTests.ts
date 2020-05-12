@@ -80,6 +80,23 @@ describe('JobService', () => {
       verify(logger.error(anything(), anything())).never()
     })
 
+    it('should resolve false and log the error if a conflict error occurs when trying to start the job', async () => {
+      const job: V1Job = generateV1Job()
+      const error: Error = new Error()
+      error['statusCode'] = 409
+
+      when(jobStatusService.getInProgressJobs(JobType.Job1)).thenResolve([])
+      when(templateGenerator.generateJobTemplate(id, JobType.Job1, mockEnvVars, IAM_ROLE)).thenReturn(job)
+      when(k8s.createNamespacedJob(NAMESPACE, job)).thenReject(error)
+
+      const result: boolean = await service.processJob(id, JobType.Job1, maxJobs, getEnvStub, IAM_ROLE)
+
+      assert.isFalse(result)
+
+      verify(k8s.createNamespacedJob(NAMESPACE, job)).called()
+      verify(logger.error(`Conflict - Job ${JobType.Job1}-${id} failed to start as this job is already in progress`)).called()
+    })
+
     it('should resolve false and log the error if an unhandled exception occurs when trying to start the job', async () => {
       const job: V1Job = generateV1Job()
       const createJobError: Error = new Error()

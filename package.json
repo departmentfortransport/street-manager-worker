@@ -19,6 +19,7 @@
   "dependencies": {
     "@kubernetes/client-node": "^0.11.2",
     "aws-sdk": "^2.328.0",
+    "http-status-codes": "^1.4.0",
     "inversify": "^5.0.1",
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.12",

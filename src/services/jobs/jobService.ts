@@ -3,6 +3,7 @@ import TYPES from '../../types'
 import { injectable } from 'inversify'
 import Logger from '../../utils/logger'
 import { V1Job, BatchV1Api, V1EnvVar } from '@kubernetes/client-node'
+import { CONFLICT } from 'http-status-codes'
 import JobTemplateGenerator from './jobTemplateGenerator'
 import { JobType } from '../../models/job'
 import JobStatusService from './jobStatusService'
@@ -28,7 +29,12 @@ export default class JobService {
 
       await this.k8s.createNamespacedJob(this.NAMESPACE, job)
     } catch (err) {
-      this.logger.error(`Job with type [${type}] not started due to error`, err)
+      if (err.statusCode === CONFLICT) {
+        this.logger.error(`Conflict - Job ${type}-${id} failed to start as this job is already in progress`)
+      } else {
+        this.logger.error(`Job with type [${type}] not started due to error`, err)
+      }
+
       return false
     }
 
