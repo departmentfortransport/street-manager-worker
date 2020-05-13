@@ -4,7 +4,8 @@ ENV KUBECTL_VERSION="v1.12.1"
 
 RUN apk upgrade --no-cache && \
     mkdir -p /opt/app/dft-street-manager-worker && \
-    mkdir -m 777 -p /opt/app/dft-street-manager-worker/tmp
+    mkdir -m 777 -p /opt/app/dft-street-manager-worker/tmp \
+    mkdir -m 777 -p /opt/app/dft-street-manager-worker/resources
 
 WORKDIR /opt/app/dft-street-manager-worker
 
@@ -13,6 +14,8 @@ ENTRYPOINT ["/sbin/tini", "--"]
 COPY package.json .
 
 COPY package-lock.json .
+
+COPY resources /opt/app/dft-street-manager-worker/resources
 
 FROM base AS dependencies
 
