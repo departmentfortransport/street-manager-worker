@@ -1,5 +1,5 @@
 // App
-export const JOBS_TAG = 'v1.0.0'
+export const JOBS_TAG = 'v1.0.1'
 export const NAMESPACE = process.env.NAMESPACE || 'local'
 
 // AWS
@@ -22,4 +22,4 @@ export const JOB_1_PGUSER = process.env.JOB_1_PGUSER || 'app'
 export const JOB_1_PGPASSWORD = process.env.JOB_1_PGPASSWORD || 'app'
 export const JOB_1_PGMINPOOLSIZE = process.env.JOB_1_PGMINPOOLSIZE || '5'
 export const JOB_1_PGMAXPOOLSIZE = process.env.JOB_1_PGMAXPOOLSIZE || '10'
-export const JOB_1_PGSSL = process.env.PGSSL === 'true' || false
+export const JOB_1_PGSSL = process.env.JOB_1_PGSSL === 'true' || false
