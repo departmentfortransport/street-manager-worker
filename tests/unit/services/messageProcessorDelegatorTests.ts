@@ -5,12 +5,13 @@ import Job1MessageProcessor from '../../../src/services/job-1/job1MessageProcess
 import { MessageProcessor } from '../../../src/models/messageProcessor'
 import { BaseMessage, MessageType } from '../../../src/models/message'
 import { generateBaseMessage } from '../../fixtures/messageFixtures'
+import { mock, instance } from 'ts-mockito'
 
 describe('MessageProcessorDelegator', () => {
 
   let delegator: MessageProcessorDelegator
 
-  let job1: Job1MessageProcessor
+  const job1: Job1MessageProcessor = instance(mock(Job1MessageProcessor))
 
   before(() => delegator = new MessageProcessorDelegator(job1))
 
