@@ -104,7 +104,7 @@ aliases:
     command: |
       source $BASH_ENV
       docker tag ${AWS_ACCOUNT_DEV}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG} ${AWS_ACCOUNT_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG}
-      docker push ${AWS_ACCOUNT_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/csv-worker:${CIRCLE_TAG}
+      docker push ${AWS_ACCOUNT_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com/worker:${CIRCLE_TAG}
   - &push_prod_ecr
     name: Push to prod ECR
     command: |
