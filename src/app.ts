@@ -12,7 +12,7 @@ const worker: Worker = iocContainer.get<Worker>(TYPES.Worker)
 process()
 
 async function process() {
-  logger.log('App starting...')
+  logger.log('App startinsg...')
 
   while (true) {
     try {
