@@ -28,6 +28,9 @@ describe('JobStatusService', () => {
       const completeJob: V1Job = generateV1Job()
       completeJob.status.conditions[0].type = JobStatus.Complete
 
+      const completeOtherAppJob: V1Job = generateV1Job()
+      completeOtherAppJob.metadata.labels['app'] = 'csv-export'
+
       const failedJob: V1Job = generateV1Job()
       failedJob.status.conditions[0].type = JobStatus.Failed
 
@@ -37,7 +40,7 @@ describe('JobStatusService', () => {
       const inProgressJobWithEmptyConditions: V1Job = generateV1Job()
       inProgressJobWithEmptyConditions.status.conditions = []
 
-      const allJobs: V1Job[] = [completeJob, failedJob, inProgressJobWithoutConditions, inProgressJobWithEmptyConditions]
+      const allJobs: V1Job[] = [completeJob, completeOtherAppJob, failedJob, inProgressJobWithoutConditions, inProgressJobWithEmptyConditions]
 
       when(k8s.listNamespacedJob(NAMESPACE)).thenResolve(generateListNamespacedJobResponse(allJobs))
 

@@ -3,6 +3,7 @@ import TYPES from '../../types'
 import { injectable } from 'inversify'
 import { V1Job, BatchV1Api } from '@kubernetes/client-node'
 import { JobType, JobStatus } from '../../models/job'
+import { Labels, LabelKey } from '../../models/labels'
 
 @injectable()
 export default class JobStatusService {
@@ -12,7 +13,7 @@ export default class JobStatusService {
     @inject(TYPES.NAMESPACE) private NAMESPACE: string) {}
 
   public async getFinishedJobs(): Promise<V1Job[]> {
-    return (await this.getJobs()).filter(this.isJobFinished)
+    return (await this.getJobs()).filter((job: V1Job) => job.metadata.labels?.[LabelKey.app] === Labels.app && this.isJobFinished(job))
   }
 
   public async getInProgressJobs(type: JobType): Promise<V1Job[]> {

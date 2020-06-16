@@ -44,6 +44,12 @@ describe('JobTemplateGenerator', () => {
       assert.equal(result.metadata.name, 'job-1-123')
     })
 
+    it('should pass the app label to the job', () => {
+      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+
+      assert.equal(result.metadata.labels['app'], 'jobs')
+    })
+
     it('should pass the IAM role to the template', () => {
       const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env, IAM_ROLE)
 
