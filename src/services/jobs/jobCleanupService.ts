@@ -13,7 +13,10 @@ export default class JobCleanupService {
     @inject(TYPES.NAMESPACE) private NAMESPACE: string) {}
 
   public async cleanupJobs(): Promise<void> {
-    const jobsToCleanup: string[] = await this.getJobsToCleanup()
+    let jobsToCleanup: string[] = await this.getJobsToCleanup()
+    jobsToCleanup = []
+    console.log('Cleaning up: ', jobsToCleanup)
+    console.log('Cleaning up: ', jobsToCleanup.forEach(job => console.log(job)))
 
     if (jobsToCleanup.length > 0) {
       await Promise.all(jobsToCleanup.map((job: string) => this.cleanupJob(job)))

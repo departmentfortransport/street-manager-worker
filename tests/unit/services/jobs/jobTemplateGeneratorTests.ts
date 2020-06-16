@@ -38,7 +38,7 @@ describe('JobTemplateGenerator', () => {
       when(fileService.getDefaultJobTemplate(JobType.Job1)).thenReturn(job)
     })
 
-    it('should generate the job name using the job type value and id to ensure uniqueness', () => {
+    it.only('should generate the job name using the job type value and id to ensure uniqueness', () => {
       const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
 
       assert.equal(result.metadata.name, 'job-1-123')
