@@ -4,6 +4,7 @@ import { injectable } from 'inversify'
 import { V1Job, V1EnvVar } from '@kubernetes/client-node'
 import JobFileService from './jobFileService'
 import { JobType } from '../../models/job'
+import { Labels, LabelKey } from '../../models/labels'
 
 @injectable()
 export default class JobTemplateGenerator {
@@ -17,6 +18,8 @@ export default class JobTemplateGenerator {
     const job: V1Job = this.fileService.getDefaultJobTemplate(type)
 
     job.metadata.name = `${type}-${id}`
+
+    job.metadata.labels[LabelKey.app] = Labels.app
 
     job.spec.template.spec.containers[0].image = `${this.ECR_URL}:${this.JOBS_TAG}`
 
