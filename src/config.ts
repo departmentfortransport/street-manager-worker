@@ -1,5 +1,5 @@
 // App
-export const JOBS_TAG = 'v1.0.3'
+export const JOBS_TAG = '4817ef58c021caace027f5bb8a98d6db9dffa281'
 export const NAMESPACE = process.env.NAMESPACE || 'local'
 
 // AWS
@@ -11,15 +11,12 @@ export const SQS_CONNECT_TIMEOUT_MS = process.env.SQS_CONNECT_TIMEOUT_MS || (5 *
 export const SQS_TIMEOUT_MS = process.env.SQS_TIMEOUT_MS || (120 * 1000)
 
 // Job 1
-export const JOB_1_IAM_ROLE = process.env.JOB_1_IAM_ROLE
-export const JOB_1_MAX_JOBS = process.env.JOB_1_MAX_JOBS || '10'
-export const JOB_1_INT_FIELD = process.env.JOB_1_INT_FIELD || '12'
-export const JOB_1_STR_FIELD = process.env.JOB_1_STR_FIELD || 'String Field'
-export const JOB_1_PGHOST = process.env.JOB_1_PGHOST || 'localhost'
-export const JOB_1_PGPORT = process.env.JOB_1_PGPORT || '5432'
-export const JOB_1_PGDATABASE = process.env.JOB_1_PGDATABASE || 'work'
-export const JOB_1_PGUSER = process.env.JOB_1_PGUSER || 'app'
-export const JOB_1_PGPASSWORD = process.env.JOB_1_PGPASSWORD || 'app'
-export const JOB_1_PGMINPOOLSIZE = process.env.JOB_1_PGMINPOOLSIZE || '5'
-export const JOB_1_PGMAXPOOLSIZE = process.env.JOB_1_PGMAXPOOLSIZE || '10'
-export const JOB_1_PGSSL = process.env.JOB_1_PGSSL === 'true' || false
+export const GENERATE_SAMPLE_INSPECTION_MAX_JOBS = process.env.GENERATE_SAMPLE_INSPECTION_MAX_JOBS || '10'
+export const GENERATE_SAMPLE_INSPECTION_PGHOST = process.env.GENERATE_SAMPLE_INSPECTION_PGHOST || 'localhost'
+export const GENERATE_SAMPLE_INSPECTION_PGPORT = process.env.GENERATE_SAMPLE_INSPECTION_PGPORT || '5432'
+export const GENERATE_SAMPLE_INSPECTION_PGDATABASE = process.env.GENERATE_SAMPLE_INSPECTION_PGDATABASE || 'work'
+export const GENERATE_SAMPLE_INSPECTION_PGUSER = process.env.GENERATE_SAMPLE_INSPECTION_PGUSER || 'app'
+export const GENERATE_SAMPLE_INSPECTION_PGPASSWORD = process.env.GENERATE_SAMPLE_INSPECTION_PGPASSWORD || 'app'
+export const GENERATE_SAMPLE_INSPECTION_PGMINPOOLSIZE = process.env.GENERATE_SAMPLE_INSPECTION_PGMINPOOLSIZE || '5'
+export const GENERATE_SAMPLE_INSPECTION_PGMAXPOOLSIZE = process.env.GENERATE_SAMPLE_INSPECTION_PGMAXPOOLSIZE || '10'
+export const GENERATE_SAMPLE_INSPECTION_PGSSL = process.env.GENERATE_SAMPLE_INSPECTION_PGSSL === 'true' || false

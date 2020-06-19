@@ -21,11 +21,7 @@
         - name: jobs
           image: change_me
           env:
-            - name: JOB_1_ID
-              value: change_me
-            - name: JOB_1_INT_FIELD
-              value: change_me
-            - name: JOB_1_STR_FIELD
+            - name: GENERATE_SAMPLE_INSPECTIONS_JOB_ID
               value: change_me
             - name: PGHOST
               value: change_me
@@ -46,7 +42,7 @@
           args:
             - /bin/sh
             - -c
-            - npm run job-1
+            - npm run generate-sample-inspections
           resources:
             limits:
               cpu: 50m

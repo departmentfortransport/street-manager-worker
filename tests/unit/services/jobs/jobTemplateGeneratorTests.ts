@@ -35,41 +35,41 @@ describe('JobTemplateGenerator', () => {
 
     beforeEach(() => {
       job = generateV1Job()
-      when(fileService.getDefaultJobTemplate(JobType.Job1)).thenReturn(job)
+      when(fileService.getDefaultJobTemplate(JobType.GenerateSampleInspection)).thenReturn(job)
     })
 
     it('should generate the job name using the job type value and id to ensure uniqueness', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.GenerateSampleInspection, env)
 
-      assert.equal(result.metadata.name, 'job-1-123')
+      assert.equal(result.metadata.name, 'generate-sample-inspection-123')
     })
 
     it('should pass the app label to the job', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.GenerateSampleInspection, env)
 
       assert.equal(result.metadata.labels['app'], 'jobs')
     })
 
     it('should pass the IAM role to the template', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env, IAM_ROLE)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.GenerateSampleInspection, env, IAM_ROLE)
 
       assert.equal(result.spec.template.metadata.annotations['iam.amazonaws.com/role'], IAM_ROLE)
     })
 
     it('should not pass the IAM role to the template if not provided', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.GenerateSampleInspection, env)
 
       assert.equal(result.spec.template.metadata.annotations['iam.amazonaws.com/role'], 'change_me')
     })
 
     it('should generate the job image using the ECR URL and Jobs tag version', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.GenerateSampleInspection, env)
 
       assert.equal(result.spec.template.spec.containers[0].image, 'some-ecr-url:v1.2.3')
     })
 
     it('should bind the provided environment variables to the template', () => {
-      const result: V1Job = generator.generateJobTemplate(id, JobType.Job1, env)
+      const result: V1Job = generator.generateJobTemplate(id, JobType.GenerateSampleInspection, env)
 
       assert.equal(result.spec.template.spec.containers[0].env, env)
     })

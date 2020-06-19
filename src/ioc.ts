@@ -1,7 +1,7 @@
 import 'reflect-metadata'
 import { Container } from 'inversify'
 import TYPES from './types'
-import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT_MS, SQS_CONNECT_TIMEOUT_MS, JOB_1_IAM_ROLE, JOB_1_MAX_JOBS, JOB_1_INT_FIELD, JOB_1_STR_FIELD, JOB_1_PGHOST, JOB_1_PGPORT, JOB_1_PGDATABASE, JOB_1_PGUSER, JOB_1_PGPASSWORD, JOB_1_PGMINPOOLSIZE, JOB_1_PGMAXPOOLSIZE, JOB_1_PGSSL } from './config'
+import { NAMESPACE, JOBS_TAG, AWS_REGION, ECR_URL, SQS_POLLING_INTERVAL, SQS_QUEUE_URL, SQS_TIMEOUT_MS, SQS_CONNECT_TIMEOUT_MS, GENERATE_SAMPLE_INSPECTION_MAX_JOBS, GENERATE_SAMPLE_INSPECTION_PGHOST, GENERATE_SAMPLE_INSPECTION_PGPORT, GENERATE_SAMPLE_INSPECTION_PGDATABASE, GENERATE_SAMPLE_INSPECTION_PGUSER, GENERATE_SAMPLE_INSPECTION_PGPASSWORD, GENERATE_SAMPLE_INSPECTION_PGMINPOOLSIZE, GENERATE_SAMPLE_INSPECTION_PGMAXPOOLSIZE, GENERATE_SAMPLE_INSPECTION_PGSSL } from './config'
 import { SQS } from 'aws-sdk'
 import { BatchV1Api, KubeConfig } from '@kubernetes/client-node'
 import Worker from './worker'
@@ -15,9 +15,9 @@ import MessageProcessorDelegator from './services/messageProcessorDelegator'
 import MessageService from './services/messageService'
 import SQSService from './services/aws/sqsService'
 import Logger from './utils/logger'
-import { Job1Config } from './models/job1'
-import Job1MessageProcessor from './services/job-1/job1MessageProcessor'
-import Job1ConfigMapper from './mappers/job1ConfigMapper'
+import { GenerateSampleInspectionJobConfig } from './models/generateSampleInspectionJob'
+import GenerateSampleInspectionMessageProcessor from './services/generate-sample-inspection/generateSampleInspectionMessageProcessor'
+import GenerateSampleInspectionConfigMapper from './mappers/generateSampleInspectionConfigMapper'
 
 const iocContainer = new Container()
 
@@ -61,22 +61,20 @@ iocContainer.bind<BatchV1Api>(TYPES.K8sBatchV1Api).toConstantValue(config.makeAp
 
 iocContainer.bind<Logger>(TYPES.Logger).to(Logger)
 
-// Job 1
-iocContainer.bind<string>(TYPES.JOB_1_IAM_ROLE).toConstantValue(JOB_1_IAM_ROLE)
-iocContainer.bind<number>(TYPES.JOB_1_MAX_JOBS).toConstantValue(Number(JOB_1_MAX_JOBS))
-iocContainer.bind<Job1Config>(TYPES.JOB_1_CONFIG).toConstantValue({
-  JOB_1_INT_FIELD: Number(JOB_1_INT_FIELD),
-  JOB_1_STR_FIELD: JOB_1_STR_FIELD,
-  PGHOST: JOB_1_PGHOST,
-  PGPORT: JOB_1_PGPORT,
-  PGDATABASE: JOB_1_PGDATABASE,
-  PGUSER: JOB_1_PGUSER,
-  PGPASSWORD: JOB_1_PGPASSWORD,
-  PGMINPOOLSIZE: Number(JOB_1_PGMINPOOLSIZE),
-  PGMAXPOOLSIZE: Number(JOB_1_PGMAXPOOLSIZE),
-  PGSSL: Boolean(JOB_1_PGSSL)
+// Generate Sample Inspection
+
+iocContainer.bind<number>(TYPES.GENERATE_SAMPLE_INSPECTION_MAX_JOBS).toConstantValue(Number(GENERATE_SAMPLE_INSPECTION_MAX_JOBS))
+iocContainer.bind<GenerateSampleInspectionJobConfig>(TYPES.GENERATE_SAMPLE_INSPECTION_CONFIG).toConstantValue({
+  PGHOST: GENERATE_SAMPLE_INSPECTION_PGHOST,
+  PGPORT: GENERATE_SAMPLE_INSPECTION_PGPORT,
+  PGDATABASE: GENERATE_SAMPLE_INSPECTION_PGDATABASE,
+  PGUSER: GENERATE_SAMPLE_INSPECTION_PGUSER,
+  PGPASSWORD: GENERATE_SAMPLE_INSPECTION_PGPASSWORD,
+  PGMINPOOLSIZE: Number(GENERATE_SAMPLE_INSPECTION_PGMINPOOLSIZE),
+  PGMAXPOOLSIZE: Number(GENERATE_SAMPLE_INSPECTION_PGMAXPOOLSIZE),
+  PGSSL: Boolean(GENERATE_SAMPLE_INSPECTION_PGSSL)
 })
-iocContainer.bind<Job1MessageProcessor>(TYPES.Job1MessageProcessor).to(Job1MessageProcessor)
-iocContainer.bind<Job1ConfigMapper>(TYPES.Job1ConfigMapper).to(Job1ConfigMapper)
+iocContainer.bind<GenerateSampleInspectionMessageProcessor>(TYPES.GenerateSampleInspectionMessageProcessor).to(GenerateSampleInspectionMessageProcessor)
+iocContainer.bind<GenerateSampleInspectionConfigMapper>(TYPES.GenerateSampleInspectionConfigMapper).to(GenerateSampleInspectionConfigMapper)
 
 export default iocContainer

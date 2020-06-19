@@ -54,16 +54,16 @@ describe('JobStatusService', () => {
 
   describe('getInProgressJobs', () => {
     it('should only return in progress jobs that also match the provided type', async () => {
-      const completeJob: V1Job = generateV1Job(`${JobType.Job1}-123`)
+      const completeJob: V1Job = generateV1Job(`${JobType.GenerateSampleInspection}-123`)
       completeJob.status.conditions[0].type = JobStatus.Complete
 
-      const failedJob: V1Job = generateV1Job(`${JobType.Job1}-456`)
+      const failedJob: V1Job = generateV1Job(`${JobType.GenerateSampleInspection}-456`)
       failedJob.status.conditions[0].type = JobStatus.Failed
 
-      const inProgressJobWithoutConditions: V1Job = generateV1Job(`${JobType.Job1}-789`)
+      const inProgressJobWithoutConditions: V1Job = generateV1Job(`${JobType.GenerateSampleInspection}-789`)
       inProgressJobWithoutConditions.status.conditions = null
 
-      const inProgressJobWithEmptyConditions: V1Job = generateV1Job(`${JobType.Job1}-987`)
+      const inProgressJobWithEmptyConditions: V1Job = generateV1Job(`${JobType.GenerateSampleInspection}-987`)
       inProgressJobWithEmptyConditions.status.conditions = []
 
       const inProgressJobWithDifferentType: V1Job = generateV1Job('other-type-job-654')
@@ -73,7 +73,7 @@ describe('JobStatusService', () => {
 
       when(k8s.listNamespacedJob(NAMESPACE)).thenResolve(generateListNamespacedJobResponse(allJobs))
 
-      const result: V1Job[] = await service.getInProgressJobs(JobType.Job1)
+      const result: V1Job[] = await service.getInProgressJobs(JobType.GenerateSampleInspection)
 
       assert.equal(result.length, 2)
       assert.equal(result[0], inProgressJobWithoutConditions)

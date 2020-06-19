@@ -24,13 +24,13 @@ describe('JobFileService', () => {
     it('should retrieve the default template for the provided type and transform to JSON', () => {
       const job: V1Job = generateV1Job()
 
-      when(fileService.readFileSync('resources/job-1.yaml')).thenReturn(safeDump(job))
+      when(fileService.readFileSync('resources/generate-sample-inspection.yaml')).thenReturn(safeDump(job))
 
-      const result: V1Job = service.getDefaultJobTemplate(JobType.Job1)
+      const result: V1Job = service.getDefaultJobTemplate(JobType.GenerateSampleInspection)
 
       assert.deepEqual(result, job)
 
-      verify(fileService.readFileSync('resources/job-1.yaml')).once()
+      verify(fileService.readFileSync('resources/generate-sample-inspection.yaml')).once()
     })
   })
 })
