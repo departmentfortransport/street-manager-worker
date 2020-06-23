@@ -15,7 +15,6 @@ export default class MessageService {
 
   public async handleMessage(message: Message): Promise<void> {
     const parsedMessage: BaseMessage = JSON.parse(message.Body)
-    console.log('parsedMessage', parsedMessage)
 
     const wasMessageProcessed: boolean = await this.delegator.getMessageProcessor(parsedMessage).process(parsedMessage)
 
