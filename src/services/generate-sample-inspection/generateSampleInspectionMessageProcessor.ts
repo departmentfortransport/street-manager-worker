@@ -16,6 +16,7 @@ export default class GenerateSampleInspectionMessageProcessor implements Message
     @inject(TYPES.GenerateSampleInspectionConfigMapper) private mapper: GenerateSampleInspectionConfigMapper) {}
 
   public async process(message: GenerateSampleInspectionSQSMessage): Promise<boolean> {
+    console.log('message', message)
     return this.jobService.processJob(message.job_id, JobType.GenerateSampleInspection, this.GENERATE_SAMPLE_INSPECTION_MAX_JOBS, () => this.mapper.mapToConfigMap(message))
   }
 }
