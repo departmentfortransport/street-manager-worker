@@ -5,7 +5,7 @@ import { mock, instance, when, verify, deepEqual } from 'ts-mockito'
 import MessageService from '../../../src/services/messageService'
 import MessageProcessorDelegator from '../../../src/services/messageProcessorDelegator'
 import SQSService from '../../../src/services/aws/sqsService'
-import { BaseMessage, MessageType } from '../../../src/models/message'
+import { BaseMessage, MessageType } from 'street-manager-data'
 import { Message } from 'aws-sdk/clients/sqs'
 import { generateBaseMessage } from '../../fixtures/messageFixtures'
 import { generateMessage } from '../../fixtures/sqsFixtures'
@@ -29,7 +29,7 @@ describe('MessageService', () => {
   })
 
   describe('handleMessage', () => {
-    const body: BaseMessage = generateBaseMessage(MessageType.job_1_message_type)
+    const body: BaseMessage = generateBaseMessage(MessageType.generate_sample_inspection_job_type)
 
     const message: Message = generateMessage(JSON.stringify(body))
 

@@ -1,4 +1,5 @@
-FROM 454455319752.dkr.ecr.eu-west-2.amazonaws.com/nodejs:alpine-3.11_nodejs-12 AS base
+ARG WORKER_IMAGE
+FROM $WORKER_IMAGE AS base
 
 ENV KUBECTL_VERSION="v1.12.1"
 
@@ -35,6 +36,10 @@ RUN set -xe; \
   echo "*** DONE ***";
 
 COPY . .
+
+RUN mkdir ~/.ssh && \
+  ssh-keyscan github.com > ~/.ssh/known_hosts && \
+  cp .ssh/id_rsa ~/.ssh/id_rsa
 
 RUN npm set progress=false && \
     npm config set depth 0 && \

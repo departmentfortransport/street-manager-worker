@@ -3,7 +3,7 @@ import { Message } from 'aws-sdk/clients/sqs'
 import { inject, injectable } from 'inversify'
 import TYPES from '../types'
 import SQSService from './aws/sqsService'
-import { BaseMessage } from '../models/message'
+import { BaseMessage } from 'street-manager-data'
 import MessageProcessorDelegator from './messageProcessorDelegator'
 
 @injectable()

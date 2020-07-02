@@ -1,4 +1,10 @@
 aliases:
+  - &prepare_ssh_key
+    name: Prepare SSH key
+    command: |
+      mkdir -p .ssh
+      echo ${SSH_PRIV_KEY} | base64 --decode > .ssh/id_rsa
+      chmod 0600 .ssh/id_rsa
   - &assume_admin_role_dev_account
     name: Assume Admin role on dev account
     command: |
@@ -51,12 +57,12 @@ aliases:
     name: Test
     command: |
       pip install awscli --upgrade --user
-      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} . --target dependencies --no-cache --pull
+      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} --build-arg WORKER_IMAGE=${WORKER_IMAGE} . --target dependencies --no-cache --pull
   - &build_and_release
     name: Build and release
     command: |
       source $BASH_ENV
-      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} .
+      docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1}  --build-arg WORKER_IMAGE=${WORKER_IMAGE} .
       aws configure set default.region eu-west-2
       aws ecr batch-delete-image --repository-name worker --image-ids imageTag=${CIRCLE_SHA1}
       docker push ${ECR_URL}/worker:${CIRCLE_SHA1}
@@ -119,6 +125,7 @@ jobs:
       image: circleci/classic:edge
     steps:
       - checkout
+      - run: *prepare_ssh_key
       - run: *assume_admin_role_dev_account
       - run: *ecr_login
       - run: *test
@@ -137,6 +144,7 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: *prepare_ssh_key
       - run: *assume_admin_role_dev_account
       - run: *ecr_login
       - run: *tag_existing_container

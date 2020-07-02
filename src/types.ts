@@ -27,12 +27,12 @@ const TYPES = {
   K8sBatchV1Api: Symbol.for('K8sBatchV1Api'),
   Logger: Symbol.for('Logger'),
 
-  // Job 1
-  JOB_1_IAM_ROLE: Symbol.for('JOB_1_IAM_ROLE'),
-  JOB_1_MAX_JOBS: Symbol.for('JOB_1_MAX_JOBS'),
-  JOB_1_CONFIG: Symbol.for('JOB_1_CONFIG'),
-  Job1MessageProcessor: Symbol.for('Job1MessageProcessor'),
-  Job1ConfigMapper: Symbol.for('Job1ConfigMapper')
+  // Generate Sample Inspection
+
+  GENERATE_SAMPLE_INSPECTION_MAX_JOBS: Symbol.for('GENERATE_SAMPLE_INSPECTION_MAX_JOBS'),
+  GENERATE_SAMPLE_INSPECTION_CONFIG: Symbol.for('GENERATE_SAMPLE_INSPECTION_CONFIG'),
+  GenerateSampleInspectionMessageProcessor: Symbol.for('generateSampleInspectionMessageProcessor'),
+  GenerateSampleInspectionConfigMapper: Symbol.for('GenerateSampleInspectionConfigMapper')
 }
 
 export default TYPES
