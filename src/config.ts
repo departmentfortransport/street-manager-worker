@@ -1,5 +1,5 @@
 // App
-export const JOBS_TAG = 'v1.0.5'
+export const JOBS_TAG = 'v1.1.0'
 export const NAMESPACE = process.env.NAMESPACE || 'local'
 
 // AWS
@@ -10,7 +10,7 @@ export const SQS_QUEUE_URL = process.env.SQS_QUEUE_URL
 export const SQS_CONNECT_TIMEOUT_MS = process.env.SQS_CONNECT_TIMEOUT_MS || (5 * 1000)
 export const SQS_TIMEOUT_MS = process.env.SQS_TIMEOUT_MS || (120 * 1000)
 
-// Job 1
+// Generate Sample Inspections Job
 export const GENERATE_SAMPLE_INSPECTION_MAX_JOBS = process.env.GENERATE_SAMPLE_INSPECTION_MAX_JOBS || '10'
 export const GENERATE_SAMPLE_INSPECTION_PGHOST = process.env.GENERATE_SAMPLE_INSPECTION_PGHOST
 export const GENERATE_SAMPLE_INSPECTION_PGPORT = process.env.GENERATE_SAMPLE_INSPECTION_PGPORT
