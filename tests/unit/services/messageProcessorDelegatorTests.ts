@@ -1,27 +1,27 @@
 import 'mocha'
 import { assert } from 'chai'
+import { mock, instance } from 'ts-mockito'
+import { BaseMessage, MessageType } from 'street-manager-data'
 import MessageProcessorDelegator from '../../../src/services/messageProcessorDelegator'
 import GenerateSampleInspectionMessageProcessor from '../../../src/services/generate-sample-inspection/generateSampleInspectionMessageProcessor'
 import { MessageProcessor } from '../../../src/models/messageProcessor'
-import { BaseMessage, MessageType } from 'street-manager-data'
 import { generateBaseMessage } from '../../fixtures/messageFixtures'
-import { mock, instance } from 'ts-mockito'
 
 describe('MessageProcessorDelegator', () => {
 
   let delegator: MessageProcessorDelegator
 
-  const job1: GenerateSampleInspectionMessageProcessor = instance(mock(GenerateSampleInspectionMessageProcessor))
+  const generateSampleInspectionsProcessor: GenerateSampleInspectionMessageProcessor = instance(mock(GenerateSampleInspectionMessageProcessor))
 
-  before(() => delegator = new MessageProcessorDelegator(job1))
+  before(() => delegator = new MessageProcessorDelegator(generateSampleInspectionsProcessor))
 
   describe('getMessageProcessor', () => {
-    it('should return the Job 1 processor when the provided message has the job 1 type', () => {
+    it('should return the Generate Sample Inspections processor when the provided message has the generate sample inspection type', () => {
       const message: BaseMessage = generateBaseMessage(MessageType.generate_sample_inspection_job_type)
 
       const result: MessageProcessor = delegator.getMessageProcessor(message)
 
-      assert.equal(result, job1)
+      assert.equal(result, generateSampleInspectionsProcessor)
     })
 
     it('should throw an error if an invalid message type is provided', () => {
