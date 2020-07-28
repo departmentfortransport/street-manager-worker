@@ -1,5 +1,5 @@
 // App
-export const JOBS_TAG = 'v1.1.0'
+export const JOBS_TAG = 'v4.9.1'
 export const NAMESPACE = process.env.NAMESPACE || 'local'
 
 // AWS
