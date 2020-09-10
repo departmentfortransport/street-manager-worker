@@ -23,7 +23,7 @@
     "http-status-codes": "^1.4.0",
     "inversify": "^5.0.1",
     "js-yaml": "^3.13.1",
-    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#645188067f1c233006d8e9790f6d18cf18c8e39e",
+    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#e98a457d51534278d81279d3e86d7df241fae945",
     "reflect-metadata": "^0.1.12",
     "underscore": "^1.9.1"
   },
