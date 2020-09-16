@@ -9,7 +9,7 @@ import { Message } from 'aws-sdk/clients/sqs'
 import { generateMessage, generateReceiveMessageResult } from '../../../fixtures/sqsFixtures'
 import { generateAWSError } from '../../../fixtures/awsFixtures'
 
-describe('SQSService', async () => {
+describe('SQSService', () => {
   let sqsService: SQSService
 
   let sqs: SQS
@@ -30,7 +30,7 @@ describe('SQSService', async () => {
     )
   })
 
-  describe('receiveMessages', async () => {
+  describe('receiveMessages', () => {
     it('should poll SQS with the correct parameters', async () => {
       const response: SQS.ReceiveMessageResult = generateReceiveMessageResult()
 
@@ -100,7 +100,7 @@ describe('SQSService', async () => {
     })
   })
 
-  describe('removeMessage', async () => {
+  describe('removeMessage', () => {
     it('should delete the supplied message from SQS', async () => {
       const message: Message = generateMessage('some-message', 'some-receipt')
 
