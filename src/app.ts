@@ -9,9 +9,13 @@ const logger: Logger = iocContainer.get<Logger>(TYPES.Logger)
 // Worker
 const worker: Worker = iocContainer.get<Worker>(TYPES.Worker)
 
-process()
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled rejection at: ', promise, `\nReason: ${reason}`)
+})
 
-async function process() {
+run()
+
+async function run() {
   logger.log('App starting...')
 
   while (true) {

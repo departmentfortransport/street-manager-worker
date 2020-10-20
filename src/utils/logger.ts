@@ -7,7 +7,7 @@ export default class Logger {
     console.log(message)
   }
 
-  public error(message: string, err?: any): void {
-    console.error(message, err || {})
+  public error(message: string, ...err: any[]): void {
+    console.error(message, ...err)
   }
 }
