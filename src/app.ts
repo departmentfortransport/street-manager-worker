@@ -9,8 +9,8 @@ const logger: Logger = iocContainer.get<Logger>(TYPES.Logger)
 // Worker
 const worker: Worker = iocContainer.get<Worker>(TYPES.Worker)
 
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error('Unhandled rejection at: ', promise, `\nReason: ${reason}`)
+process.on('unhandledRejection', (reason: Error) => {
+  console.error(`Unhandled rejection at: ${reason.stack}`)
 })
 
 run()
