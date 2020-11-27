@@ -1,7 +1,7 @@
 ARG WORKER_IMAGE
 FROM $WORKER_IMAGE AS base
 
-ENV KUBECTL_VERSION="v1.12.1"
+ENV KUBECTL_VERSION="v1.17.14"
 
 RUN apk upgrade --no-cache && \
     mkdir -p /opt/app/dft-street-manager-worker && \
