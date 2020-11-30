@@ -57,6 +57,62 @@ aliases:
       echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
       echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
       echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+  - &assume_dev_ecr_role
+    name: Assume ECR role on Dev account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_DEV_ECR}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_DEV_ECR}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_DEV}:role/${AWS_ROLE_DEV_ECR} \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_MFA_EXPIRY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["Expiration"]' 2> /dev/null)" >> $BASH_ENV
+  - &assume_preview_ecr_role
+    name: Assume ECR role on Preview account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_PREVIEW_ECR}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_PREVIEW_ECR}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_PREVIEW}:role/${AWS_ROLE_PREVIEW_ECR} \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_MFA_EXPIRY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["Expiration"]' 2> /dev/null)" >> $BASH_ENV
+  - &assume_preprod_ecr_role
+    name: Assume ECR role on PreProd account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_PREPROD_ECR}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_PREPROD_ECR}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_PREPROD}:role/${AWS_ROLE_PREPROD_ECR} \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_MFA_EXPIRY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["Expiration"]' 2> /dev/null)" >> $BASH_ENV
+  - &assume_prod_ecr_role
+    name: Assume ECR role on Production account
+    command: |
+      unset AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN
+      export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_PROD_ECR}"
+      export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_PROD_ECR}"
+      TOKEN=$(aws sts assume-role \
+        --role-arn arn:aws:iam::${AWS_ACCOUNT_PROD}:role/${AWS_ROLE_PROD_ECR} \
+        --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
+        )
+      echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
+      echo "export AWS_MFA_EXPIRY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["Expiration"]' 2> /dev/null)" >> $BASH_ENV
   - &ecr_login
     name: ECR login
     command: $(aws ecr get-login --no-include-email --region eu-west-2)
@@ -145,10 +201,10 @@ jobs:
     steps:
       - checkout
       - run: *prepare_ssh_key
-      - run: *assume_admin_role_dev_account
+      - run: *assume_dev_ecr_role
       - run: *ecr_login
       - run: *test
-      - run: *assume_admin_role_dev_account
+      - run: *assume_dev_ecr_role
       - run: *build_and_release
       - run: *cleanup
   deployment:
@@ -164,16 +220,16 @@ jobs:
     steps:
       - checkout
       - run: *prepare_ssh_key
-      - run: *assume_admin_role_dev_account
+      - run: *assume_dev_ecr_role
       - run: *ecr_login
       - run: *tag_existing_container
-      - run: *assume_preview_admin_role
+      - run: *assume_preview_ecr_role
       - run: *ecr_login
       - run: *push_preview_ecr
-      - run: *assume_preprod_admin_role
+      - run: *assume_preprod_ecr_role
       - run: *ecr_login
       - run: *push_preprod_ecr
-      - run: *assume_prod_admin_role
+      - run: *assume_prod_ecr_role
       - run: *ecr_login
       - run: *push_prod_ecr
 workflows:
