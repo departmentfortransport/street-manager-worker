@@ -13,6 +13,6 @@ export default class JobFileService {
   public constructor(@inject(TYPES.FileService) private fileService: FileService) {}
 
   public getDefaultJobTemplate(type: JobType): V1Job {
-    return safeLoad(this.fileService.readFileSync(`${path.join('resources', type)}.yaml`))
+    return safeLoad(this.fileService.readFileSync(`${path.join('resources', type)}.yaml`)) as V1Job
   }
 }
