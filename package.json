@@ -18,13 +18,13 @@
     "readiness-check": "node ./dist/readiness"
   },
   "dependencies": {
-    "@kubernetes/client-node": "^0.11.2",
+    "@kubernetes/client-node": "^0.13.2",
     "aws-sdk": "^2.328.0",
     "http-status-codes": "^1.4.0",
     "inversify": "^5.0.1",
     "js-yaml": "^3.13.1",
-    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#6469a760ca0abdb6659f33934791b476a4c4527c",
     "reflect-metadata": "^0.1.12",
+    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#54e8ffc23470cf99e49f1299da08eb9a965e3f20",
     "underscore": "^1.9.1"
   },
   "devDependencies": {
