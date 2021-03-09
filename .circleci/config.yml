@@ -12,7 +12,7 @@ aliases:
       export AWS_ACCESS_KEY_ID="${AWS_ACCESS_KEY_ID_CI_USER_DEV_ACC}"
       export AWS_SECRET_ACCESS_KEY="${AWS_SECRET_ACCESS_KEY_CI_USER_DEV_ACC}"
       TOKEN=$(aws sts assume-role \
-        --role-arn arn:aws:iam::${AWS_ACC_ID_DEV}:role/${AWS_ROLE_DEV} \
+        --role-arn arn:aws:iam::${AWS_ACC_ID_DEV}:role/${AWS_ROLE_CI_ADMIN_DEV_ACC} \
         --role-session-name "$(head /dev/urandom | LC_CTYPE=C tr -dc A-Za-z0-9 | head -c 18 ; echo '')"\
         )
       echo "export AWS_ACCESS_KEY_ID=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["AccessKeyId"]' 2> /dev/null)" >> $BASH_ENV
