@@ -74,9 +74,23 @@ aliases:
       echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
       echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
       echo "export AWS_MFA_EXPIRY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["Expiration"]' 2> /dev/null)" >> $BASH_ENV
-  - &ecr_login
-    name: ECR login
-    command: $(aws ecr get-login --no-include-email --region eu-west-2)
+
+  - &ecr_login_dev
+    name: ECR login Dev
+    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_DEV}.dkr.ecr.eu-west-2.amazonaws.com
+
+  - &ecr_login_preview
+    name: ECR login Preview
+    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_PREVIEW}.dkr.ecr.eu-west-2.amazonaws.com
+
+  - &ecr_login_preprod
+    name: ECR login Preprod
+    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_PREPROD}.dkr.ecr.eu-west-2.amazonaws.com
+
+  - &ecr_login_prod
+    name: ECR login Production
+    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_PROD}.dkr.ecr.eu-west-2.amazonaws.com
+
   - &prepare_ssh_key
     name: Prepare SSH key
     command: |
@@ -86,7 +100,6 @@ aliases:
   - &test
     name: Test
     command: |
-      pip install awscli --upgrade --user
       docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1} --build-arg WORKER_IMAGE=${WORKER_IMAGE} . --target dependencies --no-cache --pull
   - &build_and_release
     name: Build and release
@@ -158,18 +171,19 @@ version: 2.1
 jobs:
   build:
     machine:
-      image: circleci/classic:edge
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - run: *prepare_ssh_key
       - run: *assume_dev_ecr_role
-      - run: *ecr_login
+      - run: *ecr_login_dev
       - run: *test
       - run: *assume_dev_ecr_role
       - run: *build_and_release
       - run: *cleanup
   deployment:
-    machine: true
+    machine:
+      image: ubuntu-2004:202101-01
     environment:
       CLUSTER_NAME: dev-b.stwrks-dev.net
       NAMESPACE: int
@@ -177,21 +191,22 @@ jobs:
       - run: *prepare_ssh_key
       - run: *clone_street_manager_int
   tagged_build:
-    machine: true
+    machine:
+      image: ubuntu-2004:202101-01
     steps:
       - checkout
       - run: *prepare_ssh_key
       - run: *assume_dev_ecr_role
-      - run: *ecr_login
+      - run: *ecr_login_dev
       - run: *tag_existing_container
       - run: *assume_preview_ecr_role
-      - run: *ecr_login
+      - run: *ecr_login_preview
       - run: *push_preview_ecr
       - run: *assume_preprod_ecr_role
-      - run: *ecr_login
+      - run: *ecr_login_preprod
       - run: *push_preprod_ecr
       - run: *assume_prod_ecr_role
-      - run: *ecr_login
+      - run: *ecr_login_prod
       - run: *push_prod_ecr
 workflows:
   tagged_build:
