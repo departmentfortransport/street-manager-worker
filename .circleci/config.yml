@@ -135,7 +135,7 @@ aliases:
           git clone git@github.com:departmentfortransport/street-manager-$NAMESPACE.git
           cd street-manager-$NAMESPACE
           /usr/local/bin/yq w -i config.yaml apps.worker.tag $CIRCLE_SHA1
-          git diff
+          git diff --exit-code || true
           git commit -am \"Bumping worker version.\"
           git push -u origin
         "
