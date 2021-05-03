@@ -5,6 +5,8 @@
     name: change_me
     labels:
       app: jobs
+    finalizers:
+      - foregroundDeletion
   spec:
     template:
       metadata:
