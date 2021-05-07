@@ -25,7 +25,7 @@
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.12",
     "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#d86173b7a4d0f237103332d252e59a9f5142a91c",
-    "underscore": "^1.9.1"
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.16",
