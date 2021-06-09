@@ -24,13 +24,13 @@
     "inversify": "^5.0.5",
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.12",
-    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#9343789b3ac38ee6861ed398a666827ce6351d79",
+    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#417605abf0843c853d4f83c3acc421434f8f31f2",
     "underscore": "^1.13.1"
   },
   "devDependencies": {
     "@types/chai": "^4.2.16",
     "@types/mocha": "^8.2.2",
-    "@types/node": "^10.7.1",
+    "@types/node": "^15.12.2",
     "@types/sinon": "^10.0.0",
     "chai": "^4.3.4",
     "mocha": "^8.3.2",
