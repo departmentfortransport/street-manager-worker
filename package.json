@@ -24,7 +24,7 @@
     "inversify": "^5.0.5",
     "js-yaml": "^3.13.1",
     "reflect-metadata": "^0.1.12",
-    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#85fefff20ed9608ec70a9a6f59c6ab6f2bdb9795",
+    "street-manager-data": "git+ssh://git@github.com:departmentfortransport/street-manager-data#e98f3e5c6373d2e34f71ec376c15e4cbcb103b06",
     "underscore": "^1.13.1"
   },
   "devDependencies": {
