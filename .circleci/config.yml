@@ -74,23 +74,18 @@ aliases:
       echo "export AWS_SECRET_ACCESS_KEY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SecretAccessKey"]' 2> /dev/null)" >> $BASH_ENV
       echo "export AWS_SESSION_TOKEN=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["SessionToken"]' 2> /dev/null)" >> $BASH_ENV
       echo "export AWS_MFA_EXPIRY=$(echo $TOKEN | python -c 'import json,sys;print json.load(sys.stdin)["Credentials"]["Expiration"]' 2> /dev/null)" >> $BASH_ENV
-
   - &ecr_login_dev
     name: ECR login Dev
-    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_DEV}.dkr.ecr.eu-west-2.amazonaws.com
-
+    command: aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACC_ID_DEV}.dkr.ecr.${AWS_REGION}.amazonaws.com
   - &ecr_login_preview
     name: ECR login Preview
-    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_PREVIEW}.dkr.ecr.eu-west-2.amazonaws.com
-
+    command: aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACC_ID_PREVIEW}.dkr.ecr.${AWS_REGION}.amazonaws.com
   - &ecr_login_preprod
     name: ECR login Preprod
-    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_PREPROD}.dkr.ecr.eu-west-2.amazonaws.com
-
+    command: aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACC_ID_PREPROD}.dkr.ecr.${AWS_REGION}.amazonaws.com
   - &ecr_login_prod
     name: ECR login Production
-    command: aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${AWS_ACC_ID_PROD}.dkr.ecr.eu-west-2.amazonaws.com
-
+    command: aws ecr get-login-password --region ${AWS_REGION} | docker login --username AWS --password-stdin ${AWS_ACC_ID_PROD}.dkr.ecr.${AWS_REGION}.amazonaws.com
   - &prepare_ssh_key
     name: Prepare SSH key
     command: |
@@ -106,7 +101,7 @@ aliases:
     command: |
       source $BASH_ENV
       docker build -t ${ECR_URL}/worker:${CIRCLE_SHA1}  --build-arg WORKER_IMAGE=${WORKER_IMAGE} .
-      aws configure set default.region eu-west-2
+      aws configure set default.region ${AWS_REGION}
       aws ecr batch-delete-image --repository-name worker --image-ids imageTag=${CIRCLE_SHA1}
       docker push ${ECR_URL}/worker:${CIRCLE_SHA1}
   - &cleanup
@@ -130,8 +125,8 @@ aliases:
           apk add git openssh-client jq curl
           curl -sLo /usr/local/bin/yq https://github.com/mikefarah/yq/releases/download/2.2.1/yq_linux_amd64
           chmod +x /usr/local/bin/yq
-          git config --global user.name "streetmanagerops"
-          git config --global user.email streetmanagerops@kainos.com
+          git config --global user.name ${GIT_CONFIG_USERNAME}
+          git config --global user.email ${GIT_CONFIG_EMAIL}
           git clone git@github.com:departmentfortransport/street-manager-$NAMESPACE.git
           cd street-manager-$NAMESPACE
           /usr/local/bin/yq w -i config.yaml apps.worker.tag $CIRCLE_SHA1
