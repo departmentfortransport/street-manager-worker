@@ -28,7 +28,7 @@
     "underscore": "^1.13.1"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.16",
+    "@types/chai": "^4.2.21",
     "@types/mocha": "^8.2.2",
     "@types/node": "^10.7.1",
     "@types/sinon": "^10.0.0",
